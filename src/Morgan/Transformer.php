@@ -2,10 +2,36 @@
 
 namespace Morgan;
 
+use DOMDocument;
 use DOMElement;
 
 class Transformer
 {
+    /**
+     * Return transformer to replace the content of the matched
+     * elements with the specifed HTML fragment
+     *
+     * @param string $html
+     *
+     * @return Callable
+     */
+    public static function htmlContent($html)
+    {
+        return function(DOMElement $element) use ($html)
+        {
+            $dom = new DOMDocument();
+            $dom->loadHTML($html);
+
+            $owner = $element->ownerDocument;
+            $node = $dom->documentElement->cloneNode($deepClone = true);
+
+            $element->nodeValue = '';
+            $element->appendChild(
+                $owner->importNode($node, $deepClone = true)
+            );
+        };
+    }
+
     /**
      * Returns a transformer function for setting the content
      * of a matched element.

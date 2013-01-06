@@ -69,16 +69,65 @@ of some document, and you can use them for things like extracting a blog post
 from a HTML file, then rendering this post in another template.
 
 ```php
-T::render(
+$snippet = T::snippet(
     'blog-post-list.html',
-    array(
-        '.subject' => T::content('Post Title')
-    ),
-    '.post'
+    '.post',
+    function($data) {
+        return array(
+            '.subject' => T::content($data['title'])
+        );
+    }
 );
 ```
 
-The third argument to allows selecting a part of the specified HTML file.
+The second argument to allows selecting a part of the specified HTML file.
+
+## Non-Trivial Example
+
+As a more fully featured example, imagine you have a page where you want to list
+a bunch of blog posts.  This page will contain a title, then a list of blog post
+subjects with a short summary of their content (the title linking to each post).
+
+We can markup this in a single file called _blog-posts.html_, then use it as the
+template for our page, extract the example snippet for a blog post in summary
+view to use for the blog posts.
+
+```php
+# array of blog posts to show
+$posts = array(
+    array(
+        'title' => 'First Post',
+        'summary' => 'Some short snippet'
+    ),
+    array(
+        'title' => 'Another Post',
+        'summary' => 'And another short snippet'
+    )
+);
+
+// re-usable blog post summary snippet
+
+$postSnippet = T::snippet(
+    'blog-posts.html',
+    '.post',
+    function($item) {
+        return array(
+            'h3' => T::content($item['title']),
+            'p' => T::content($item['summary'])
+        );
+    }
+);
+
+// render the main template
+
+T::render(
+    'blog-posts.html',
+    array(
+        'h1' => 'The Blog Posts Page',
+        '.posts' => T::mapSnippet($postSnippet, $posts)
+    )
+);
+```
 
 ## Motivation
 
