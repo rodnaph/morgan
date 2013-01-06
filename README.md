@@ -7,7 +7,7 @@ Morgan is a PHP port of the ideas from [EnLive](https://github.com/cgrand/enlive
 
 ## Usage
 
-```
+```php
 use Morgan\Template as T;
 
 $tpl = new T();
@@ -22,7 +22,7 @@ $tpl->render(
 
 In the above simple example the transformer we used was the _content_ transformer.  There are other transformers available…
 
-```
+```php
 T::content('Some new content')
 
 T::append('This please')
@@ -36,7 +36,7 @@ T::removeAttr('class')
 
 You can also create your own transformers, they are just functions which accept a _DOMElement_ objects and mutate it in some way.
 
-```
+```php
 $tpl->render(
     'a' => function(DOMElement $element) { … }
 )
@@ -46,7 +46,7 @@ $tpl->render(
 
 As well as entire documents, you can also create snippets.  These are fragments of some document, and you can use them for things like extracting a blog post from a HTML file, then rendering this post in another template.
 
-```
+```php
 use Morgan\Snippet as S;
 
 $post = new S('blog-post-list.html', '.post');
@@ -62,3 +62,4 @@ The second argument to the constructor allows selecting a part of the specified 
 ## Motivation
 
 This library was inspired by EnLive, and is mainly a [just-for-fun](http://en.wikipedia.org/wiki/Just_for_Fun) implementation in PHP.  If you find it useful though feel free to contribute!
+
