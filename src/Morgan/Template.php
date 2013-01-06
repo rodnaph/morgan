@@ -20,7 +20,11 @@ class Template extends Transformer
     private $selector;
 
     /**
-     * {@inheritDoc}
+     * Echo the result of applying the arguments to fetch()
+     *
+     * @param string $path
+     * @param array $transformers
+     * @param string $selector Optional
      */
     public static function render($path, array $transformers, $selector = null)
     {
@@ -28,7 +32,15 @@ class Template extends Transformer
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the result of applying the transformer functions to the
+     * HTML document at the specified path.  You can optionally limit to a
+     * fragment inside the document with the $selector
+     *
+     * @param string $path
+     * @param array $transformers
+     * @param string $selector Optional
+     *
+     * @return string
      */
     public static function fetch($path, array $transformers, $selector = null)
     {
@@ -107,22 +119,6 @@ class Template extends Transformer
     }
 
     /**
-     * Return the DOMDocument to operate transformations on
-     *
-     * @return DOMDocument
-     */
-    protected function getDOMDocument()
-    {
-        $source = new DOMDocument();
-        $source->loadHTMLFile($this->path);
-
-        return $this->selector
-            ? self::fragment($source, $this->selector)
-            : $source;
-    }
-
-
-    /**
      * Return a document from the specified source document
      *
      * @param DOMDocument $source
@@ -176,5 +172,20 @@ class Template extends Transformer
         }
 
         return $dom->saveHTML();
+    }
+
+    /**
+     * Return the DOMDocument to operate transformations on
+     *
+     * @return DOMDocument
+     */
+    protected function getDOMDocument()
+    {
+        $source = new DOMDocument();
+        $source->loadHTMLFile($this->path);
+
+        return $this->selector
+            ? self::fragment($source, $this->selector)
+            : $source;
     }
 }
