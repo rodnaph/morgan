@@ -51,6 +51,44 @@ class Template extends Transformer
     }
 
     /**
+     * Map a snippet over the array of items and return a content
+     * transformer for the result
+     *
+     * @param Callable $snippet
+     * @param array $items
+     *
+     * @return Callable
+     */
+    public static function mapContent($snippet, array $items)
+    {
+        return self::content(
+            implode(
+                '',
+                array_map($snippet, $items)
+            )
+        );
+    }
+
+    /**
+     * Create a snippet function for the fragment selected from
+     * the specified file.  The return value is then callable with some
+     * data than the $handler expects.  The handler then needs to 
+     * return an array of selector/transformer key values pairs
+     *
+     * @param string $path
+     * @param string $selector
+     * @param Callable $handler
+     *
+     * @return Callable
+     */
+    public static function snippet($path, $selector, $handler)
+    {
+        return function($item) use ($path, $selector, $handler) {
+            return Template::fetch($path, $handler($item), $selector);
+        };
+    }
+
+    /**
      * Perform a CSS selector query on the document and return the
      * matched elements
      *
@@ -59,7 +97,7 @@ class Template extends Transformer
      *
      * @return array
      */
-    protected function query(DOMDocument $dom, $selector)
+    protected static function query(DOMDocument $dom, $selector)
     {
         $query = CssSelector::toXPath($selector);
         $xpath = new DOMXPath($dom);
@@ -79,22 +117,22 @@ class Template extends Transformer
         $source->loadHTMLFile($this->path);
 
         return $this->selector
-            ? self::snippet($source, $this->selector)
+            ? self::fragment($source, $this->selector)
             : $source;
     }
 
 
     /**
-     * Return a snippet from the specified source document
+     * Return a document from the specified source document
      *
      * @param DOMDocument $source
      *
      * @return DOMDocument
      */
-    protected static function snippet(DOMDocument $source, $selector)
+    protected static function fragment(DOMDocument $source, $selector)
     {
         $dom = new DOMDocument;
-        $elements = $this->query($source, $selector);
+        $elements = self::query($source, $selector);
 
         foreach ($elements as $element) {
             $dom->appendChild(
@@ -130,7 +168,7 @@ class Template extends Transformer
         $dom = $this->getDOMDocument();
 
         foreach ($transformers as $selector => $transformer) {
-            $elements = $this->query($dom, $selector);
+            $elements = self::query($dom, $selector);
 
             foreach ($elements as $element) {
                 self::apply($element, array($transformer));

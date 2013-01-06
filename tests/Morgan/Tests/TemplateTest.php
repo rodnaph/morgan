@@ -57,4 +57,35 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
         $this->assertContains('The Example Title', $html);
     }
+
+    public function testSnippetsCanBeRendered()
+    {
+        $html = T::fetch($this->p, array(), '.things');
+
+        $this->assertContains('Title of thing', $html);
+        $this->assertNotContains('Page Heading', $html);
+        $this->assertNotContains('Example Title', $html);
+    }
+
+    public function testSnippetsCanBeMappedToReplaceContent()
+    {
+        $items = array(
+            array('title' => 'One'),
+            array('title' => 'Two')
+        );
+        $snippet = T::snippet(
+            'tests/data/test.html',
+            '.things',
+            function($item) {
+                return array('h3' => T::content($item['title']));
+            }
+        );
+        $html = T::fetch(
+            $this->p,
+            array('.things' => T::mapContent($snippet, $items))
+        );
+
+        $this->assertContains('One', $html);
+        $this->assertContains('Two', $html);
+    }
 }
