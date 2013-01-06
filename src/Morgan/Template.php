@@ -7,40 +7,34 @@ use DOMElement;
 use DOMXPath;
 use Symfony\Component\CssSelector\CssSelector;
 
-class Template implements Renderable
+class Template extends Transformer
 {
     /**
-     * @param string $path
+     * @var string
      */
-    public function __construct($path)
+    private $path;
+
+    /**
+     * @var string
+     */
+    private $selector;
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function render($path, array $transformers, $selector = null)
     {
-        $this->path = $path;
+        echo self::fetch($path, $transformers);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function render(array $transformers)
+    public static function fetch($path, array $transformers, $selector = null)
     {
-        echo $this->fetch($transformers);
-    }
+        $t = new Template($path, $selector);
 
-    /**
-     * {@inheritDoc}
-     */
-    public function fetch(array $transformers)
-    {
-        $dom = $this->getDOMDocument();
-
-        foreach ($transformers as $selector => $transformer) {
-            $elements = $this->query($dom, $selector);
-
-            foreach ($elements as $element) {
-                self::apply($element, array($transformer));
-            }
-        }
-
-        return $dom->saveHTML();
+        return $t->html($transformers);
     }
 
     /**
@@ -81,6 +75,34 @@ class Template implements Renderable
      */
     protected function getDOMDocument()
     {
+        $source = new DOMDocument();
+        $source->loadHTMLFile($this->path);
+
+        return $this->selector
+            ? self::snippet($source, $this->selector)
+            : $source;
+    }
+
+
+    /**
+     * Return a snippet from the specified source document
+     *
+     * @param DOMDocument $source
+     *
+     * @return DOMDocument
+     */
+    protected static function snippet(DOMDocument $source, $selector)
+    {
+        $dom = new DOMDocument;
+        $elements = $this->query($source, $selector);
+
+        foreach ($elements as $element) {
+            $dom->appendChild(
+                $dom->importNode($element, $deepClone = true)
+            );
+        }
+
+        return $dom;
         $dom = new DOMDocument();
         $dom->loadHTMLFile($this->path);
 
@@ -88,94 +110,33 @@ class Template implements Renderable
     }
 
     /**
-     * Returns a transformer function for setting the content
-     * of a matched element.
-     *
-     * @param string $content
-     *
-     * @return Callable
+     * @param string $path
      */
-    public static function content($content)
+    protected function __construct($path, $selector)
     {
-        return function(DOMElement $element) use ($content) {
-            $element->nodeValue = $content;
-        };
+        $this->path = $path;
+        $this->selector = $selector;
     }
 
     /**
-     * Returns a transformer for appending content to matched
-     * elements
+     * Return the HTML content for a template
      *
-     * @param string $content
+     * @param array $transformers
      *
-     * @return Callable
+     * @return string
      */
-    public static function append($content)
+    protected function html(array $transformers)
     {
-        return function(DOMElement $element) use ($content)
-        {
-            $element->nodeValue .= $content;
-        };
-    }
+        $dom = $this->getDOMDocument();
 
-    /**
-     * Returns transformer to prepent content to elements
-     *
-     * @param string $content
-     *
-     * @return Callable
-     */
-    public static function prepend($content)
-    {
-        return function(DOMElement $element) use ($content) {
-            $element->nodeValue = $content . $element->nodeValue;
-        };
-    }
+        foreach ($transformers as $selector => $transformer) {
+            $elements = $this->query($dom, $selector);
 
-    /**
-     * Returns a transformer function for setting attributes
-     * on matched elements
-     *
-     * @param string $name
-     * @param string $value
-     *
-     * @return Callable
-     */
-    public static function setAttr($name, $value)
-    {
-        return function(DOMElement $element) use ($name, $value) {
-            $element->setAttribute($name, $value);
-        };
-    }
+            foreach ($elements as $element) {
+                self::apply($element, array($transformer));
+            }
+        }
 
-    /**
-     * Returns a transformer to remove an attribute from the
-     * matched element
-     *
-     * @param string $name
-     *
-     * @return Callable
-     */
-    public static function removeAttr($name)
-    {
-        return function(DOMElement $element) use ($name) {
-            $element->removeAttribute($name);
-        };
-    }
-
-    /**
-     * Allows applying multiple transformers to a single selector
-     *
-     * @param Callable varargs...
-     *
-     * @return Callable
-     */
-    public static function do_()
-    {
-        $transformers = func_get_args();
-
-        return function(DOMElement $element) use ($transformers) {
-            Template::apply($element, $transformers);
-        };
+        return $dom->saveHTML();
     }
 }
