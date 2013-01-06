@@ -71,7 +71,7 @@ use Morgan\Snippet as S;
 $post = new S('blog-post-list.html', '.post');
 $post->render(
     array(
-        '.posts' => T::content('Post Title')
+        '.subject' => T::content('Post Title')
     )
 );
 ```
