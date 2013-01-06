@@ -1,4 +1,9 @@
 {
+    "autoload": {
+        "psr-0": {
+            "Morgan": "src/"
+        }
+    },
     "require": {
         "symfony/css-selector": "dev-master"
     }
