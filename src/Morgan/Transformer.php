@@ -8,6 +8,19 @@ use DOMElement;
 class Transformer
 {
     /**
+     * Apply the array of transformers to the specified element
+     *
+     * @param DOMElement $element
+     * @param array $transformers
+     */
+    public static function apply(DOMElement $element, array $transformers)
+    {
+        foreach ($transformers as $transformer) {
+            $transformer($element);
+        }
+    }
+
+    /**
      * Return transformer to replace the content of the matched
      * elements with the specifed HTML fragment
      *
@@ -120,7 +133,7 @@ class Transformer
         $transformers = func_get_args();
 
         return function(DOMElement $element) use ($transformers) {
-            Template::apply($element, $transformers);
+            Transformer::apply($element, $transformers);
         };
     }
 }

@@ -50,19 +50,6 @@ class Template extends Transformer
     }
 
     /**
-     * Apply the array of transformers to the specified element
-     *
-     * @param DOMElement $element
-     * @param array $transformers
-     */
-    public static function apply(DOMElement $element, array $transformers)
-    {
-        foreach ($transformers as $transformer) {
-            $transformer($element);
-        }
-    }
-
-    /**
      * Map a snippet over the array of items and return a content
      * transformer for the result
      *
