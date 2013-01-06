@@ -33,16 +33,45 @@ class Template implements Renderable
         $dom = $this->getDOMDocument();
 
         foreach ($transformers as $selector => $transformer) {
-            $query = CssSelector::toXPath($selector);
-            $xpath = new DOMXPath($dom);
-            $nodes = $xpath->query($query);
+            $elements = $this->query($dom, $selector);
 
-            foreach ($nodes as $node) {
-                $transformer($node);
+            foreach ($elements as $element) {
+                self::apply($element, array($transformer));
             }
         }
 
         return $dom->saveHTML();
+    }
+
+    /**
+     * Apply the array of transformers to the specified element
+     *
+     * @param DOMElement $element
+     * @param array $transformers
+     */
+    public static function apply(DOMElement $element, array $transformers)
+    {
+        foreach ($transformers as $transformer) {
+            $transformer($element);
+        }
+    }
+
+    /**
+     * Perform a CSS selector query on the document and return the
+     * matched elements
+     *
+     * @param DOMDocument $dom
+     * @param string $selector
+     *
+     * @return array
+     */
+    protected function query(DOMDocument $dom, $selector)
+    {
+        $query = CssSelector::toXPath($selector);
+        $xpath = new DOMXPath($dom);
+        $elements = $xpath->query($query);
+
+        return $elements;
     }
 
     /**
@@ -90,6 +119,20 @@ class Template implements Renderable
     }
 
     /**
+     * Returns transformer to prepent content to elements
+     *
+     * @param string $content
+     *
+     * @return Callable
+     */
+    public static function prepend($content)
+    {
+        return function(DOMElement $element) use ($content) {
+            $element->nodeValue = $content . $element->nodeValue;
+        };
+    }
+
+    /**
      * Returns a transformer function for setting attributes
      * on matched elements
      *
@@ -117,6 +160,22 @@ class Template implements Renderable
     {
         return function(DOMElement $element) use ($name) {
             $element->removeAttribute($name);
+        };
+    }
+
+    /**
+     * Allows applying multiple transformers to a single selector
+     *
+     * @param Callable varargs...
+     *
+     * @return Callable
+     */
+    public static function do_()
+    {
+        $transformers = func_get_args();
+
+        return function(DOMElement $element) use ($transformers) {
+            Template::apply($element, $transformers);
         };
     }
 }
