@@ -76,14 +76,18 @@ class Template extends Transformer
      *
      * @param string $path
      * @param string $selector
-     * @param Callable $handler
+     * @param Callable $handler Optional
      *
      * @return Callable
      */
-    public static function snippet($path, $selector, $handler)
+    public static function snippet($path, $selector, $handler = null)
     {
         return function($item = null) use ($path, $selector, $handler) {
-            return Template::fetch($path, $handler($item), $selector);
+            return Template::fetch(
+                $path,
+                $handler ? $handler($item) : array(),
+                $selector
+            );
         };
     }
 
@@ -92,11 +96,11 @@ class Template extends Transformer
      * $handler when it needs to render the template with some data.
      *
      * @param string $path
-     * @param Callable $handler
+     * @param Callable $handler Optional
      *
      * @return Callable
      */
-    public static function template($path, $handler)
+    public static function template($path, $handler = null)
     {
         return self::snippet($path, null, $handler);
     }

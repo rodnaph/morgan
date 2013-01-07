@@ -105,4 +105,18 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('Example Title', $tpl());
         $this->assertContains('Title of thing', $snip());
     }
+
+    public function testHandlerFunctionIsOptionalToTemplate()
+    {
+        $tpl = T::template($this->p);
+
+        $this->assertNotNull($tpl());
+    }
+
+    public function testHandlerFunctionIsOptionalToSnippet()
+    {
+        $snip = T::snippet($this->p, '.things');
+
+        $this->assertNotNull($snip());
+    }
 }
