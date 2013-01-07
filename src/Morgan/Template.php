@@ -103,6 +103,7 @@ class Template extends Transformer
 
     /**
      * @param string $path
+     * @param string $selector
      */
     protected function __construct($path, $selector)
     {
@@ -122,7 +123,7 @@ class Template extends Transformer
         $dom = $this->getDOMDocument();
 
         foreach ($transformers as $selector => $transformer) {
-            $elements = self::query($dom, $selector);
+            $elements = $this->query($dom, $selector);
 
             foreach ($elements as $element) {
                 self::apply($element, array($transformer));
