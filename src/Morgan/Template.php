@@ -82,10 +82,12 @@ class Template extends Transformer
      */
     public static function snippet($path, $selector, $handler = null)
     {
-        return function($item = null) use ($path, $selector, $handler) {
+        return function() use ($path, $selector, $handler) {
+            $args = func_get_args();
+
             return Template::fetch(
                 $path,
-                $handler ? $handler($item) : array(),
+                $handler ? call_user_func_array($handler, $args) : array(),
                 $selector
             );
         };

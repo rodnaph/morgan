@@ -137,4 +137,22 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNotContains('<body><html>', $html);
     }
+
+    public function testTemplatesAndSnippetsCanTakeMultipleArguments()
+    {
+        $snip = T::snippet(
+            $this->p,
+            '.things',
+            function($a, $b) {
+                return array(
+                    'h3' => T::content($a),
+                    'p' => T::content($b)
+                );
+            }
+        );
+        $html = $snip('One', 'Two');
+
+        $this->assertContains('One', $html);
+        $this->assertContains('Two', $html);
+    }
 }
