@@ -1,10 +1,25 @@
 {
+    "name": "rodnaph/morgan",
+    "type": "library",
+    "description": "Pure HTML Templating for PHP",
+    "keywords": ["templating"],
+    "homepage": "https://github.com/rodnaph/morgan",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "rod",
+            "email": "rod@pu-gh.com",
+            "homepage": "http://rod.pu-gh.com",
+            "role": "Developer"
+        }
+    ],
     "autoload": {
         "psr-0": {
             "Morgan": "src/"
         }
     },
     "require": {
+        "php": ">=5.3.0",
         "symfony/css-selector": "dev-master"
     }
 }
