@@ -184,9 +184,5 @@ class Template extends Transformer
         }
 
         return $dom;
-        $dom = new DOMDocument();
-        $dom->loadHTMLFile($this->path);
-
-        return $dom;
     }
 }
