@@ -174,6 +174,16 @@ T::render(
 );
 ```
 
+## Installation with Composer
+
+Morgan is available via Composer, just add it with composer, and specify the version as _dev-master_.
+
+```javascript
+composer require rodnaph/morgan
+```
+
+You may need to specify the _minimum-stability_ as "dev".
+
 ## Motivation
 
 This library was inspired by EnLive, and is mainly a [just-for-fun](http://en.wikipedia.org/wiki/Just_for_Fun)
