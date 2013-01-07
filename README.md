@@ -169,7 +169,7 @@ T::render(
     'blog-posts.html',
     array(
         'h1' => 'The Blog Posts Page',
-        '.posts' => T::mapSnippet($postSnippet, $posts)
+        '.posts' => T::map($postSnippet, $posts)
     )
 );
 ```

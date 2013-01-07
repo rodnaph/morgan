@@ -82,7 +82,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         );
         $html = T::fetch(
             $this->p,
-            array('.things' => T::mapSnippet($snippet, $items))
+            array('.things' => T::map($snippet, $items))
         );
 
         $this->assertContains('One', $html);

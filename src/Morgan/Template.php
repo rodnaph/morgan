@@ -58,7 +58,7 @@ class Template extends Transformer
      *
      * @return Callable
      */
-    public static function mapSnippet($snippet, array $items)
+    public static function map($snippet, array $items)
     {
         return self::htmlContent(
             implode(
