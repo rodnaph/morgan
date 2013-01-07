@@ -88,46 +88,17 @@ class Template extends Transformer
     }
 
     /**
-     * Perform a CSS selector query on the document and return the
-     * matched elements
+     * Create a template function that will dispatch to the specified
+     * $handler when it needs to render the template with some data.
      *
-     * @param DOMDocument $dom
-     * @param string $selector
+     * @param string $path
+     * @param Callable $handler
      *
-     * @return array
+     * @return Callable
      */
-    protected static function query(DOMDocument $dom, $selector)
+    public static function template($path, $handler)
     {
-        $query = CssSelector::toXPath($selector);
-        $xpath = new DOMXPath($dom);
-        $elements = $xpath->query($query);
-
-        return $elements;
-    }
-
-    /**
-     * Return a document from the specified source document
-     *
-     * @param DOMDocument $source
-     *
-     * @return DOMDocument
-     */
-    protected static function fragment(DOMDocument $source, $selector)
-    {
-        $dom = new DOMDocument;
-        $elements = self::query($source, $selector);
-
-        foreach ($elements as $element) {
-            $dom->appendChild(
-                $dom->importNode($element, $deepClone = true)
-            );
-        }
-
-        return $dom;
-        $dom = new DOMDocument();
-        $dom->loadHTMLFile($this->path);
-
-        return $dom;
+        return self::snippet($path, null, $handler);
     }
 
     /**
@@ -172,7 +143,50 @@ class Template extends Transformer
         $source->loadHTMLFile($this->path);
 
         return $this->selector
-            ? self::fragment($source, $this->selector)
+            ? $this->fragment($source, $this->selector)
             : $source;
+    }
+
+    /**
+     * Perform a CSS selector query on the document and return the
+     * matched elements
+     *
+     * @param DOMDocument $dom
+     * @param string $selector
+     *
+     * @return array
+     */
+    protected function query(DOMDocument $dom, $selector)
+    {
+        $query = CssSelector::toXPath($selector);
+        $xpath = new DOMXPath($dom);
+        $elements = $xpath->query($query);
+
+        return $elements;
+    }
+
+    /**
+     * Return a document from the specified source document
+     *
+     * @param DOMDocument $source
+     *
+     * @return DOMDocument
+     */
+    protected function fragment(DOMDocument $source, $selector)
+    {
+        $dom = new DOMDocument;
+        $elements = $this->query($source, $selector);
+
+        foreach ($elements as $element) {
+            $dom->appendChild(
+                $dom->importNode($element, $deepClone = true)
+            );
+        }
+
+        return $dom;
+        $dom = new DOMDocument();
+        $dom->loadHTMLFile($this->path);
+
+        return $dom;
     }
 }

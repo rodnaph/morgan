@@ -30,8 +30,7 @@ class Transformer
      */
     public static function htmlContent($html)
     {
-        return function(DOMElement $element) use ($html)
-        {
+        return function(DOMElement $element) use ($html) {
             $dom = new DOMDocument();
             $dom->loadHTML($html);
 
@@ -70,8 +69,7 @@ class Transformer
      */
     public static function append($content)
     {
-        return function(DOMElement $element) use ($content)
-        {
+        return function(DOMElement $element) use ($content) {
             $element->nodeValue .= $content;
         };
     }

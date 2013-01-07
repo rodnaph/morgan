@@ -17,7 +17,7 @@ use Morgan\Template as T;
 T::render(
     'page.html',
     array(
-        'title' => T::content('Some Text')
+        '.header h1' => T::content('Some Text')
     )
 );
 ```
@@ -27,11 +27,27 @@ render we pass an array of key/value pairs where the keys are CSS selectors to
 match elements in the document, and the values are functions to transform those
 elements.
 
-So in the above example we're selecting the _title_ element, and then we're
-setting its content to the string 'Some Text'.
+So in the above example we're selecting all _h1_ elements inside _.header_
+elements, and then we're setting their content to the string 'Some Text'.
 
 _render()_ will echo the content of the template, you can also use _fetch()_ to
 just return the transformed content.
+
+You can also get handles to [Callable](http://php.net/manual/en/language.types.callable.php)
+template functions like this...
+
+```php
+$homePage = T::template(
+    'index.html',
+    function($data) {
+        return array(
+            'h1' => T::content($data['title'])
+        );
+    }
+);
+
+$html = $homePage(array('title' => 'The Title'));
+```
 
 ## Transformers
 
@@ -42,6 +58,10 @@ There are other transformers available…
 T::content('Some new content')
 
 T::append('This please')
+
+T::prepend('Some string')
+
+T::htmlContent('<b>bold text</b>')
 
 T::setAttr('class', 'some-class')
 
@@ -60,6 +80,20 @@ T::render(
         'a' => function(DOMElement $element) { … }
     )
 );
+```
+
+## Multi Transforms
+
+Often you'll want to apply multiple transformers to a given selector.  You can
+do this by using the *do_* form.
+
+```php
+array(
+    '.foo' => T::do_(
+        T::content('New content'),
+        T::setAttr('href', '/some/page.html')
+    )
+)
 ```
 
 ## Snippets
@@ -133,4 +167,18 @@ T::render(
 
 This library was inspired by EnLive, and is mainly a [just-for-fun](http://en.wikipedia.org/wiki/Just_for_Fun)
 implementation in PHP.  If you find it useful though feel free to contribute!
+
+The following functions from EnLive are not implemented yet, so I still need to
+review them and do that if they make sense...
+
+```
+wrap
+unwrap
+addClass
+removeClass
+after
+before
+substitute
+move
+```
 
