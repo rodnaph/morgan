@@ -124,4 +124,9 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertNotNull(T::fetch($this->p));
     }
+
+    public function testContentIsOptionalToHtmlContent()
+    {
+        T::fetch($this->p, array('title' => T::htmlContent(null)));
+    }
 }

@@ -30,7 +30,7 @@ class Transformer
      */
     public static function htmlContent($html)
     {
-        return function(DOMElement $element) use ($html) {
+        $transformer = function(DOMElement $element) use ($html) {
             $dom = new DOMDocument();
             $dom->loadHTML($html);
 
@@ -42,6 +42,18 @@ class Transformer
                 $owner->importNode($node, $deepClone = true)
             );
         };
+
+        return $html ? $transformer : Transformer::noop();
+    }
+
+    /**
+     * Returns transformer which does nothing
+     *
+     * @return Callable
+     */
+    public static function noop()
+    {
+        return function() {};
     }
 
     /**
