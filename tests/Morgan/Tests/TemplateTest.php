@@ -88,4 +88,21 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('One', $html);
         $this->assertContains('Two', $html);
     }
+
+    public function testTemplatesCanBeRenderedAsFunctions()
+    {
+        $tpl = T::template($this->p, function() { return array(); });
+
+        $this->assertContains('Example Title', $tpl(array()));
+    }
+
+    public function testDataForTemplatesAndSnippetsIsOptional()
+    {
+        $func = function() { return array(); };
+        $tpl = T::template($this->p, $func);
+        $snip = T::snippet($this->p, '.things', $func);
+
+        $this->assertContains('Example Title', $tpl());
+        $this->assertContains('Title of thing', $snip());
+    }
 }
