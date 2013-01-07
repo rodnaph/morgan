@@ -119,4 +119,9 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNotNull($snip());
     }
+
+    public function testTransformersAreOptionalForFetch()
+    {
+        $this->assertNotNull(T::fetch($this->p));
+    }
 }

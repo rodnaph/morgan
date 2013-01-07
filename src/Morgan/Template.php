@@ -26,7 +26,7 @@ class Template extends Transformer
      * @param array $transformers
      * @param string $selector Optional
      */
-    public static function render($path, array $transformers, $selector = null)
+    public static function render($path, array $transformers = array(), $selector = null)
     {
         echo self::fetch($path, $transformers);
     }
@@ -42,7 +42,7 @@ class Template extends Transformer
      *
      * @return string
      */
-    public static function fetch($path, array $transformers, $selector = null)
+    public static function fetch($path, array $transformers = array(), $selector = null)
     {
         $t = new Template($path, $selector);
 
