@@ -34,12 +34,15 @@ class Transformer
             $dom = new DOMDocument();
             $dom->loadHTML($html);
 
-            $owner = $element->ownerDocument;
-            $node = $dom->documentElement->cloneNode($deepClone = true);
+            $node = $dom->createDocumentFragment();
+            $node->appendXML($html);
 
             $element->nodeValue = '';
             $element->appendChild(
-                $owner->importNode($node, $deepClone = true)
+                $element->ownerDocument->importNode(
+                    $node,
+                    $deepClone = true
+                )
             );
         };
 

@@ -129,4 +129,12 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     {
         T::fetch($this->p, array('title' => T::htmlContent(null)));
     }
+
+    public function testSnippetsDoNotContainHtmlOrBody()
+    {
+        $snip = T::snippet($this->p, '.things');
+        $html = T::fetch($this->p, array('body' => T::htmlContent($snip())));
+
+        $this->assertNotContains('<body><html>', $html);
+    }
 }
