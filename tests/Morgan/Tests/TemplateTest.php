@@ -188,4 +188,19 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
         $this->assertContains('class="bobble"', $html);
     }
+
+    public function testMultipleClassesCanBeAddedToAnElement()
+    {
+        $html = T::fetch($this->p, array('h2' => T::addClass('bobble', 'popple')));
+
+        $this->assertContains('class="bobble popple"', $html);
+    }
+
+    public function testMultipleClassesCanBeRemovedFromAnElement()
+    {
+        $html = T::fetch($this->p, array('body' => T::removeClass('foo', 'bar')));
+
+        $this->assertNotContains('class="foo bar"', $html);
+        $this->assertNotContains('class="bar"', $html);
+    }
 }

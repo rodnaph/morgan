@@ -39,16 +39,16 @@ class Element
      * the given class $name
      *
      * @param DOMElement $element
-     * @param string $name
+     * @param array $classes
      *
      * @return array
      */
-    public static function withoutClass(DOMElement $element, $name)
+    public static function withoutClasses(DOMElement $element, array $classes)
     {
         return array_filter(
             Element::classesFor($element),
-            function($class) use ($name) {
-                return $class && $class != $name;
+            function($class) use ($classes) {
+                return $class && !in_array($class, $classes);
             }
         );
     }

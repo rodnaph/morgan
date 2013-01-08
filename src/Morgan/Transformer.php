@@ -138,36 +138,42 @@ class Transformer
     }
 
     /**
-     * Return transformer to add a class to an element
+     * Return transformer to add some classes to an element
      *
-     * @param string $name
+     * @param string $class,...
      *
      * @return Callable
      */
-    public static function addClass($name)
+    public static function addClass()
     {
-        return function(DOMElement $element) use ($name) {
-            $classes = Element::withoutClass($element, $name);
+        $classes = func_get_args();
 
-            array_push($classes, $name);
-
-            Element::setClasses($element, $classes);
+        return function(DOMElement $element) use ($classes) {
+            Element::setClasses(
+                $element,
+                array_merge(
+                    Element::withoutClasses($element, $classes),
+                    $classes
+                )
+            );
         };
     }
 
     /**
-     * Return transformer to remove a class from an element
+     * Return transformer to remove some classes from an element
      *
-     * @param string $name
+     * @param string $class,...
      *
      * @return Callable
      */
-    public static function removeClass($name)
+    public static function removeClass()
     {
-        return function(DOMElement $element) use ($name) {
+        $classes = func_get_args();
+
+        return function(DOMElement $element) use ($classes) {
             Element::setClasses(
                 $element,
-                Element::withoutClass($element, $name)
+                Element::withoutClasses($element, $classes)
             );
         };
     }
