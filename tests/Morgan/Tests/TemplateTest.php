@@ -203,4 +203,12 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertNotContains('class="foo bar"', $html);
         $this->assertNotContains('class="bar"', $html);
     }
+
+    public function testElementsCanBeReplacedWithHtml()
+    {
+        $html = T::fetch($this->p, array('.things' => T::replaceWith('<b>Gone...</b>')));
+
+        $this->assertNotContains('class="things"', $html);
+        $this->assertContains('<b>Gone...</b>', $html);
+    }
 }

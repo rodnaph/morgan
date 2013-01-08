@@ -2,6 +2,7 @@
 
 namespace Morgan;
 
+use DOMDocument;
 use DOMElement;
 
 class Element
@@ -64,6 +65,26 @@ class Element
         $element->setAttribute(
             'class',
             implode(' ', $classes)
+        );
+    }
+
+    /**
+     * Return a new DOMDocumentFragment for the specified HTML
+     *
+     * @param string $html
+     *
+     * @return DOMDocumentFragment
+     */
+    public static function forHtmlIn($html, DOMDocument $target)
+    {
+        $dom = new DOMDocument();
+
+        $newElement = $dom->createDocumentFragment();
+        $newElement->appendXML($html);
+
+        return $target->importNode(
+            $newElement,
+            $deepClone = true
         );
     }
 }

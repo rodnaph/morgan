@@ -73,11 +73,14 @@ T::setAttr('href', '/blog/post.html')
 # remove attributes of elements
 T::removeAttr('class')
 
-# add class to element
+# add classes to element
 T::addClass('foo', 'bar', 'baz')
 
-# remove class from element
+# remove classes from element
 T::removeClass('foo', 'bar', 'baz')
+
+# replace with some HTML
+T::replaceWith('<b>Some HTML</b>')
 ```
 
 ## Custom Transformers
@@ -205,7 +208,6 @@ wrap
 unwrap
 after
 before
-substitute
 move
 ```
 

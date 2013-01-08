@@ -2,7 +2,6 @@
 
 namespace Morgan;
 
-use DOMDocument;
 use DOMElement;
 
 class Transformer
@@ -18,18 +17,9 @@ class Transformer
     public static function htmlContent($html)
     {
         $transformer = function(DOMElement $element) use ($html) {
-            $dom = new DOMDocument();
-            $dom->loadHTML($html);
-
-            $node = $dom->createDocumentFragment();
-            $node->appendXML($html);
-
             $element->nodeValue = '';
             $element->appendChild(
-                $element->ownerDocument->importNode(
-                    $node,
-                    $deepClone = true
-                )
+                Element::forHtmlIn($html, $element->ownerDocument)
             );
         };
 
@@ -174,6 +164,24 @@ class Transformer
             Element::setClasses(
                 $element,
                 Element::withoutClasses($element, $classes)
+            );
+        };
+    }
+
+    /**
+     * Return transformer to replace the matched elements with
+     * the specified HTML
+     *
+     * @param string $html
+     *
+     * @return Callable
+     */
+    public static function replaceWith($html)
+    {
+        return function(DOMElement $element) use ($html) {
+            $element->parentNode->replaceChild(
+                Element::forHtmlIn($html, $element->ownerDocument),
+                $element
             );
         };
     }
