@@ -169,4 +169,23 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
         $this->assertContains('class="foo"', $html);
     }
+
+    public function testRemovingNonExistantClassDoesntThrowAnError()
+    {
+        T::fetch($this->p, array('h2' => T::removeClass('foo')));
+    }
+
+    public function testAddingExistingClassDoesntDuplicateIt()
+    {
+        $html = T::fetch($this->p, array('body' => T::addClass('bar')));
+
+        $this->assertNotContains('bar bar', $html);
+    }
+
+    public function testAddingAClassToElementWithoutAnyClassesDoesntThrowError()
+    {
+        $html = T::fetch($this->p, array('h2' => T::addClass('bobble')));
+
+        $this->assertContains('class="bobble"', $html);
+    }
 }

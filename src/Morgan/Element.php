@@ -35,6 +35,25 @@ class Element
     }
 
     /**
+     * Returns all the classes from the specified element without
+     * the given class $name
+     *
+     * @param DOMElement $element
+     * @param string $name
+     *
+     * @return array
+     */
+    public static function withoutClass(DOMElement $element, $name)
+    {
+        return array_filter(
+            Element::classesFor($element),
+            function($class) use ($name) {
+                return $class && $class != $name;
+            }
+        );
+    }
+
+    /**
      * Set the specified classes on the element
      *
      * @param DOMElement $element

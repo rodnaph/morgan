@@ -147,7 +147,7 @@ class Transformer
     public static function addClass($name)
     {
         return function(DOMElement $element) use ($name) {
-            $classes = Element::classesFor($element);
+            $classes = Element::withoutClass($element, $name);
 
             array_push($classes, $name);
 
@@ -165,14 +165,10 @@ class Transformer
     public static function removeClass($name)
     {
         return function(DOMElement $element) use ($name) {
-            $classes = array_filter(
-                Element::classesFor($element),
-                function($class) use ($name) {
-                    return $class != $name;
-                }
+            Element::setClasses(
+                $element,
+                Element::withoutClass($element, $name)
             );
-
-            Element::setClasses($element, $classes);
         };
     }
 }
