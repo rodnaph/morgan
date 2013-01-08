@@ -155,4 +155,18 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('One', $html);
         $this->assertContains('Two', $html);
     }
+
+    public function testClassCanBeAddedToAnAttribute()
+    {
+        $html = T::fetch($this->p, array('body' => T::addClass('bazzle')));
+
+        $this->assertContains('class="foo bar bazzle"', $html);
+    }
+
+    public function testClassCanBeRemovedFromADocument()
+    {
+        $html = T::fetch($this->p, array('body' => T::removeClass('bar')));
+
+        $this->assertContains('class="foo"', $html);
+    }
 }

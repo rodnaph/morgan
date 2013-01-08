@@ -132,7 +132,7 @@ class Template extends Transformer
             $elements = $this->query($dom, $selector);
 
             foreach ($elements as $element) {
-                self::apply($element, array($transformer));
+                Element::apply($element, array($transformer));
             }
         }
 
