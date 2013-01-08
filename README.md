@@ -74,10 +74,10 @@ T::setAttr('href', '/blog/post.html')
 T::removeAttr('class')
 
 # add class to element
-T::addClass('foo')
+T::addClass('foo', 'bar', 'baz')
 
 # remove class from element
-T::removeClass('bar')
+T::removeClass('foo', 'bar', 'baz')
 ```
 
 ## Custom Transformers
