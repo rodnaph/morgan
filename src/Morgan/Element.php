@@ -77,14 +77,9 @@ class Element
      */
     public static function forHtmlIn($html, DOMDocument $target)
     {
-        $dom = new DOMDocument();
-
-        $newElement = $dom->createDocumentFragment();
+        $newElement = $target->createDocumentFragment();
         $newElement->appendXML($html);
 
-        return $target->importNode(
-            $newElement,
-            $deepClone = true
-        );
+        return $newElement;
     }
 }
