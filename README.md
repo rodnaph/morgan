@@ -1,5 +1,5 @@
 
-# Morgan - Pure HTML Templating for PHP [![Build Status](https://secure.travis-ci.org/rodnaph/morgan.png?branch=master)](http://travis-ci.org/rodnaph/morgan)
+# Morgan - Pure HTML Templating for PHP [![Build Status](https://api.travis-ci.org/rodnaph/morgan.png)](http://travis-ci.org/rodnaph/morgan)
 
 Morgan is a small templating library for [PHP](http://www.php.net) to enable
 using 'pure HTML' templates.  This means that no templating is included in
