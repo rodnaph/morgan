@@ -1,4 +1,3 @@
-
 # Morgan - Pure HTML Templating for PHP [![Build Status](https://api.travis-ci.org/rodnaph/morgan.png)](http://travis-ci.org/rodnaph/morgan)
 
 Morgan is a small templating library for [PHP](http://www.php.net) to enable
@@ -10,6 +9,9 @@ templates using your application data.
 Morgan is a PHP port of the ideas from [EnLive](https://github.com/cgrand/enlive).
 
 ## Usage
+
+If you want to dive straight in there's an [example application](https://github.com/rodnaph/morgan-example)
+with more details.
 
 ```php
 use Morgan\Template as T;
@@ -29,9 +31,8 @@ values are functions to transform those elements.
 
 So in the above example we're selecting all _h1_ elements inside _.header_
 elements, and then we're setting their content to the string 'Some Text'.
-
-(_render() will echo the content of the template, you can also use fetch() to
-just return the transformed content._)
+T::render() will echo the content of the template, you can also use T::fetch()
+to just return the transformed content.
 
 You can also get handles to [Callable](http://php.net/manual/en/language.types.callable.php)
 template functions like this...
@@ -39,14 +40,15 @@ template functions like this...
 ```php
 $homePage = T::template(
     'index.html',
-    function($data) {
+    function($title, $content) {
         return array(
-            'h1' => T::content($data['title'])
+            'h1' => T::content($title),
+            '.container' => T::htmlContent($content)
         );
     }
 );
 
-$html = $homePage(array('title' => 'The Title'));
+$html = $homePage('The Title', '<h2>Main content...</h2>');
 ```
 
 ## Transformers
