@@ -145,6 +145,7 @@ view to use for the blog posts.
 
 ```php
 # array of blog posts to show
+
 $posts = array(
     array(
         'title' => 'First Post',
@@ -158,7 +159,7 @@ $posts = array(
     )
 );
 
-// re-usable blog post summary snippet
+# re-usable blog post summary snippet
 
 $postSnippet = T::snippet(
     'blog-posts.html',
@@ -174,7 +175,7 @@ $postSnippet = T::snippet(
     }
 );
 
-// render the main template
+# render the main template
 
 T::render(
     'blog-posts.html',
@@ -200,7 +201,7 @@ You may need to specify the _minimum-stability_ as "dev".
 This library was inspired by EnLive, and is mainly a [just-for-fun](http://en.wikipedia.org/wiki/Just_for_Fun)
 implementation in PHP.  If you find it useful though feel free to contribute!
 
-## TODO
+### TODO
 
 The following functions from EnLive are not implemented yet, so I still need to
 review them and do that if they make sense...
