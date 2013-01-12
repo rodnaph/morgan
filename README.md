@@ -188,13 +188,12 @@ T::render(
 
 ## Installation with Composer
 
-Morgan is available via [Composer](http://getcomposer.org), just add it with composer, and specify the version as _dev-master_.
+Morgan is available via [Composer](http://getcomposer.org), just add it with composer, and specify the
+[version you want to use](https://packagist.org/packages/rodnaph/morgan).
 
 ```javascript
 composer require rodnaph/morgan
 ```
-
-You may need to specify the _minimum-stability_ as "dev".
 
 ## Motivation
 
