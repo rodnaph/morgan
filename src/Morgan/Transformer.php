@@ -16,7 +16,7 @@ class Transformer
      */
     public static function htmlContent($html)
     {
-        $transformer = function(DOMElement $element) use ($html) {
+        $transformer = function (DOMElement $element) use ($html) {
             $element->nodeValue = '';
             $element->appendChild(
                 Element::forHtmlIn($html, $element->ownerDocument)
@@ -33,7 +33,9 @@ class Transformer
      */
     public static function noop()
     {
-        return function() {};
+        return function () {
+            // do nothing
+        };
     }
 
     /**
@@ -46,7 +48,7 @@ class Transformer
      */
     public static function content($content)
     {
-        return function(DOMElement $element) use ($content) {
+        return function (DOMElement $element) use ($content) {
             $element->nodeValue = $content;
         };
     }
@@ -61,7 +63,7 @@ class Transformer
      */
     public static function append($content)
     {
-        return function(DOMElement $element) use ($content) {
+        return function (DOMElement $element) use ($content) {
             $element->nodeValue .= $content;
         };
     }
@@ -75,7 +77,7 @@ class Transformer
      */
     public static function prepend($content)
     {
-        return function(DOMElement $element) use ($content) {
+        return function (DOMElement $element) use ($content) {
             $element->nodeValue = $content . $element->nodeValue;
         };
     }
@@ -91,7 +93,7 @@ class Transformer
      */
     public static function setAttr($name, $value)
     {
-        return function(DOMElement $element) use ($name, $value) {
+        return function (DOMElement $element) use ($name, $value) {
             $element->setAttribute($name, $value);
         };
     }
@@ -106,7 +108,7 @@ class Transformer
      */
     public static function removeAttr($name)
     {
-        return function(DOMElement $element) use ($name) {
+        return function (DOMElement $element) use ($name) {
             $element->removeAttribute($name);
         };
     }
@@ -118,11 +120,11 @@ class Transformer
      *
      * @return Callable
      */
-    public static function do_()
+    public static function all()
     {
         $transformers = func_get_args();
 
-        return function(DOMElement $element) use ($transformers) {
+        return function (DOMElement $element) use ($transformers) {
             Element::apply($element, $transformers);
         };
     }
@@ -138,7 +140,7 @@ class Transformer
     {
         $classes = func_get_args();
 
-        return function(DOMElement $element) use ($classes) {
+        return function (DOMElement $element) use ($classes) {
             Element::setClasses(
                 $element,
                 array_merge(
@@ -160,7 +162,7 @@ class Transformer
     {
         $classes = func_get_args();
 
-        return function(DOMElement $element) use ($classes) {
+        return function (DOMElement $element) use ($classes) {
             Element::setClasses(
                 $element,
                 Element::withoutClasses($element, $classes)
@@ -178,7 +180,7 @@ class Transformer
      */
     public static function replaceWith($html)
     {
-        return function(DOMElement $element) use ($html) {
+        return function (DOMElement $element) use ($html) {
             $element->parentNode->replaceChild(
                 Element::forHtmlIn($html, $element->ownerDocument),
                 $element

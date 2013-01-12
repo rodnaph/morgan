@@ -48,7 +48,7 @@ class Element
     {
         return array_filter(
             Element::classesFor($element),
-            function($class) use ($classes) {
+            function ($class) use ($classes) {
                 return $class && !in_array($class, $classes);
             }
         );

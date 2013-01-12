@@ -45,7 +45,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
     public function testMultipleTransformersCanBeApplied()
     {
-        $html = T::fetch($this->p, array('title' => T::do_(T::append(' - Boo'), T::setAttr('class', 'foo'))));
+        $html = T::fetch($this->p, array('title' => T::all(T::append(' - Boo'), T::setAttr('class', 'foo'))));
 
         $this->assertContains('Example Title - Boo', $html);
         $this->assertContains('class="foo"', $html);

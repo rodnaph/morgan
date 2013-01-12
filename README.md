@@ -102,11 +102,11 @@ T::render(
 ## Multi Transforms
 
 Often you'll want to apply multiple transformers to a given selector.  You can
-do this by using the *do_* form.
+do this by using the *all* form.
 
 ```php
 array(
-    '.foo' => T::do_(
+    '.foo' => T::all(
         T::content('New content'),
         T::setAttr('href', '/some/page.html')
     )
@@ -166,7 +166,7 @@ $postSnippet = T::snippet(
     '.post',
     function($item) {
         return array(
-            'h3 a' => T::do_(
+            'h3 a' => T::all(
                 T::content($item['title']),
                 T::setAttr('href', $item['href'])
             ),
