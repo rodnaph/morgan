@@ -32,7 +32,7 @@ class Element
         $classString = $element->getAttribute('class');
         $classes = preg_split('/\s+/', $classString);
 
-        return array_unique($classes);
+        return array_filter(array_unique($classes));
     }
 
     /**
@@ -46,12 +46,7 @@ class Element
      */
     public static function withoutClasses(DOMElement $element, array $classes)
     {
-        return array_filter(
-            Element::classesFor($element),
-            function ($class) use ($classes) {
-                return $class && !in_array($class, $classes);
-            }
-        );
+        return array_diff(Element::classesFor($element), $classes);
     }
 
     /**
