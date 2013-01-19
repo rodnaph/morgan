@@ -71,7 +71,7 @@ class Template extends Transformer
     /**
      * Create a snippet function for the fragment selected from
      * the specified file.  The return value is then callable with some
-     * data than the $handler expects.  The handler then needs to 
+     * data than the $handler expects.  The handler then needs to
      * return an array of selector/transformer key values pairs
      *
      * @param string $path

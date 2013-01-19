@@ -133,7 +133,7 @@ $snippet = T::snippet(
 
 The second argument is the CSS selector for selecting the fragment from the document.
 
-## Non-Trivial Example
+## Less Trivial Example
 
 As a more fully featured example, imagine you have a page where you want to list
 a bunch of blog posts.  This page will contain a title, then a list of blog post
@@ -193,7 +193,7 @@ As well as the static interface you can also use Morgan in an OOP manner if you 
 ```php
 use Morgan\Template as T;
 
-# creating and echo the template
+# create and echo the template
 
 $t = new T('path/to/file.html');
 
@@ -212,7 +212,7 @@ echo $s->html(array(
 
 ## Installation with Composer
 
-Morgan is available via [Composer](http://getcomposer.org), just add it with composer, and specify the
+Morgan is available via [Composer](http://getcomposer.org), just require it and specify the
 [version you want to use](https://packagist.org/packages/rodnaph/morgan).
 
 ```javascript
