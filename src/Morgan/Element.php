@@ -21,21 +21,6 @@ class Element
     }
 
     /**
-     * Return an array of classes for a particular element
-     *
-     * @param DOMElement $element
-     *
-     * @return array
-     */
-    public static function classesFor(DOMElement $element)
-    {
-        $classString = $element->getAttribute('class');
-        $classes = preg_split('/\s+/', $classString);
-
-        return array_filter(array_unique($classes));
-    }
-
-    /**
      * Returns all the classes from the specified element without
      * the given class $name
      *
@@ -76,5 +61,20 @@ class Element
         $newElement->appendXML($html);
 
         return $newElement;
+    }
+
+    /**
+     * Return an array of classes for a particular element
+     *
+     * @param DOMElement $element
+     *
+     * @return array
+     */
+    protected static function classesFor(DOMElement $element)
+    {
+        $classString = $element->getAttribute('class');
+        $classes = preg_split('/\s+/', $classString);
+
+        return array_filter(array_unique($classes));
     }
 }
