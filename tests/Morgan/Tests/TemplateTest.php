@@ -211,4 +211,11 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertNotContains('class="things"', $html);
         $this->assertContains('<b>Gone...</b>', $html);
     }
+
+    public function testTemplateCanBeAccessedOOStyle()
+    {
+        $t = new T($this->p);
+
+        $this->assertNotNull($t->html(array()));
+    }
 }

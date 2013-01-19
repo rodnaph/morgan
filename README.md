@@ -186,6 +186,30 @@ T::render(
 );
 ```
 
+## Object Orientated Usage
+
+As well as the static interface you can also use Morgan in an OOP manner if you like.
+
+```php
+use Morgan\Template as T;
+
+# creating and echo the template
+
+$t = new T('path/to/file.html');
+
+echo $t->html(array(
+    'h1' => T::contect('Some title')
+));
+
+# snippet is exactly the same, but with a selector
+
+$s = new T('path/to/file.html', '.some-selector');
+
+echo $s->html(array(
+    '.description' => T::content('A Description')
+));
+```
+
 ## Installation with Composer
 
 Morgan is available via [Composer](http://getcomposer.org), just add it with composer, and specify the

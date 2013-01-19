@@ -109,9 +109,9 @@ class Template extends Transformer
 
     /**
      * @param string $path
-     * @param string $selector
+     * @param string $selector Optional
      */
-    protected function __construct($path, $selector)
+    public function __construct($path, $selector = null)
     {
         $this->path = $path;
         $this->selector = $selector;
@@ -124,7 +124,7 @@ class Template extends Transformer
      *
      * @return string
      */
-    protected function html(array $transformers)
+    public function html(array $transformers)
     {
         $dom = $this->getDOMDocument();
 
