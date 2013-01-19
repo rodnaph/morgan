@@ -37,7 +37,7 @@ class Template extends Transformer
      * fragment inside the document with the $selector
      *
      * @param string $path
-     * @param array $transformers
+     * @param array $transformers Optional
      * @param string $selector Optional
      *
      * @return string
@@ -120,11 +120,11 @@ class Template extends Transformer
     /**
      * Return the HTML content for a template
      *
-     * @param array $transformers
+     * @param array $transformers Optional
      *
      * @return string
      */
-    public function html(array $transformers)
+    public function html(array $transformers = array())
     {
         $dom = $this->getDOMDocument();
 

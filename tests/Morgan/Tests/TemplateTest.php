@@ -218,4 +218,11 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNotNull($t->html(array()));
     }
+
+    public function testTransformersAreOptionalToHtmlMethod()
+    {
+        $t = new T($this->p);
+
+        $this->assertNotNull($t->html());
+    }
 }
