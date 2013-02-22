@@ -28,7 +28,7 @@ class Template extends Transformer
      */
     public static function render($path, array $transformers = array(), $selector = null)
     {
-        echo self::fetch($path, $transformers);
+        echo self::fetch($path, $transformers, $selector);
     }
 
     /**
